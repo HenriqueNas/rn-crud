@@ -1,16 +1,18 @@
-import React from "react"
-import { Alert, FlatList, View } from "react-native"
+import React, { useContext } from "react"
+import { Alert, FlatList, View, StyleSheet } from "react-native"
 import { Button, Icon, ListItem, Avatar } from "react-native-elements"
-import users from '../data/users'
+import UsersContext from "../context/UsersContext"
 
 const UserList = ( props ) => {
+
+  const { state } = useContext(UsersContext);
 
   function getUserItem({item: user}) {
     return(
       <ListItem
         key={user.id} 
         bottomDivider
-        onPress={() => props.navigation.navigate('UserForm')}
+        onPress={() => props.navigation.navigate('UserForm', user)}
       >
         <Avatar rounded source={{uri: user.avatarUrl}} />
         <ListItem.Content>
@@ -52,14 +54,24 @@ const UserList = ( props ) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         keyExtractor={user => user.id.toString()}
-        data={users}
+        data={state.users}
         renderItem={getUserItem}
       />
     </View>
   )
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+});
 
 export default UserList
