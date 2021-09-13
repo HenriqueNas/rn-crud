@@ -5,7 +5,7 @@ import UsersContext from "../context/UsersContext"
 
 const UserList = ( props ) => {
 
-  const { state } = useContext(UsersContext);
+  const { state, dispatch } = useContext(UsersContext);
 
   function getUserItem({item: user}) {
     return(
@@ -44,7 +44,10 @@ const UserList = ( props ) => {
       {
         text: 'Sim',
         onPress() {
-
+          dispatch({
+            type: 'deleteUser',
+            payload: { user },
+          })
         }
       },
       {

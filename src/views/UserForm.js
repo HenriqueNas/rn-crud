@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react"
 import { View, Text, TextInput, StyleSheet, Button,TouchableOpacity } from "react-native"
-import UsersContext from "../context/UsersContext";
+import UsersContext from "../context/UsersContext"
 
 const UserForm = ({route, navigation}) => {
-  const [user, setUser] = useState(route.params ?? {});
+  const [user, setUser] = useState(route.params ?? {})
+  const { dispatch } = useContext(UsersContext)
 
   return (
     <View style={styles.container}>
@@ -11,28 +12,34 @@ const UserForm = ({route, navigation}) => {
         <Text>Nome</Text>
         <TextInput
           style={styles.input}
-          onChange={name => setUser({...user, name})}
+          onChangeText={name => setUser({...user, name})}
           placeholder='Nome do Usuário'
           value={user.name}
         />
         <Text>Email</Text>
         <TextInput
           style={styles.input}
-          onChange={email => setUser({...user, email})}
+          onChangeText={email => setUser({...user, email})}
           placeholder='Email'
           value={user.email}
         />
         <Text>Avatar</Text>
         <TextInput
           style={styles.input}
-          onChange={avatarUrl => setUser({...user, avatarUrl})}
+          onChangeText={avatarUrl => setUser({...user, avatarUrl})}
           placeholder='Informe a URL do Avatar'
           value={user.avatarUrl}
         />
         <View style={styles.button}>
           <Button 
             title='Salvar'
-            onPress={() => {navigation.goBack()}}
+            onPress={() => {
+              dispatch({
+                type: user.id ? 'updateUser' : 'createUser',
+                payload: { user },
+              })
+              navigation.goBack()
+            }}
           />
         </View>
       </View>
